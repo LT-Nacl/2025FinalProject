@@ -29,9 +29,8 @@ void draw(){
         popMatrix();
       
 for(gameObject g : objList){
-  int[] pCollider = {(int)camX,(int)camY+50,(int)camZ};
-  grounded = false;
-    if(g.collide(pCollider ) || camY < -50){
+
+    if(camY < -50){
       grounded = true;
     }
     g.r();
