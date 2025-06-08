@@ -1,32 +1,20 @@
 class Mesh{
-  private String id;
-  private ArrayList<int[]> points;
-  public Mesh(String i){
-    id = i;
-    points = new ArrayList<int[]>();
+  private float[] scale;
+  private float[] position;
+  public Mesh(float[] scale, float[] position){
+    this.scale = scale;
+    this.position = position;
   }
-  public Mesh(String i, Mesh other){
-    id = i;
-    points = other.getPoints();
+  public float[] getScale(){
+    return scale;
   }
-  public Mesh(String i, ArrayList<int[]> pp){
-    id = i;
-    points = pp;
+  public float[] getPos(){
+    return position;
   }
-  void addPoints(int[] p){
-      points.add(p);
-  }
-  String getID(){
-    return id;
-  }
-   ArrayList<int[]> getPoints(){
-      return points;
-  };
-  void cullPoints(Mesh other){ //call on self to remove vertices
-    for(int[] p : other.getPoints()){
-      if(points.indexOf(p)==-1){
-         this.addPoints(p);
-       }
+  
+  public void setPos(float[] p){
+    for(int i = 0; i<p.length; i++){
+      position[i] = p[i];
     }
-  } 
+  }
 }

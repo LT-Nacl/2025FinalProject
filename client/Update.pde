@@ -1,51 +1,56 @@
-
+float vCamX=0;
+float vCamZ=0;
 void updateCamera() {
   t = millis();
+  
   if (keyPressed) {
     if (key == 'w' || keyCode == UP) {  
-      camX += cos(camYaw) * camSpeed;
-      camZ += sin(camYaw) * camSpeed;
+      vCamX += cos(camYaw);
+      vCamZ += sin(camYaw);
     }
     if (key == 's' || keyCode == DOWN) {
-      camX -= cos(camYaw) * camSpeed;
-      camZ -= sin(camYaw) * camSpeed;
+      vCamX -= cos(camYaw);
+      vCamZ -= sin(camYaw);
     }
     if (key == 'a' || keyCode == LEFT) {
-      camX -= cos(camYaw + PI / 2) * camSpeed;
-      camZ -= sin(camYaw + PI / 2) * camSpeed;
+      vCamX -= cos(camYaw + PI / 2);
+      vCamZ -= sin(camYaw + PI / 2);
     }
     if (key == 'd' || keyCode == RIGHT) {
-      camX += cos(camYaw + PI / 2) * camSpeed;
-      camZ += sin(camYaw + PI / 2) * camSpeed;
+      vCamX += cos(camYaw + PI / 2);
+      vCamZ += sin(camYaw + PI / 2);
     }
     if (key == 'e'){
       camY+=camSpeed;
     }
     if (key == ' ' && grounded){
-      if(t-t1>1000){
-      aG-=5;
-      t1 = millis();
-      }
+      aG-=20;
+      camY-=.04f;
+      grounded = false;
     }
-    /*if (key == ' '){
-      
-      camY-= -1;
-      aG -= 3;
-      t1 = millis();
-      System.out.println("jump");
+
+  }else{
+    //slow down naturally.
+    if(vCamX!=0){
+    vCamX += -.5 * vCamX/abs(vCamX);
+    }
+    if(vCamZ!=0){
+    vCamZ += -.5 * vCamZ/abs(vCamZ);
     }
   }
-   */
-}
+      vCamX=constrain(vCamX,-1f*camSpeed,camSpeed);
+      vCamZ=constrain(vCamZ,-1f*camSpeed,camSpeed);
+      camX+=vCamX;
+      camZ+=vCamZ;
       aG += grav;
       camY+=aG;
-  
     
-   if(camY>=0 || grounded){
+   if(camY>=0||grounded){
     aG = 0;
     camY=0;
-    if(grounded) System.out.println("grounded");
-   }
+    grounded = true;
+   System.out.println("grounded");
+}
 
   
 
@@ -56,7 +61,7 @@ void updateCamera() {
   camPitch += mouseYDelta * mouseSensitivity;
 
   camPitch = constrain(camPitch, -PI / 2 + .001f, PI / 2-.001f);
-    cursor(CROSS);
+  cursor(CROSS);
   moveMouse(width / 2, height / 2);
 }
 
@@ -69,7 +74,7 @@ void drawCameraInfo() {
   camera();
   textMode(MODEL);
   
-  fill(0);
+  fill(255);
   textSize(20);
   textAlign(LEFT, TOP);
   
@@ -81,7 +86,7 @@ void drawCameraInfo() {
     degrees(camYaw),
     degrees(camPitch)
   );
-  fill(0);
+  fill(255);
   text(info, 20, 20);
   fill(255);
   hint(ENABLE_DEPTH_TEST);

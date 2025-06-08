@@ -1,6 +1,6 @@
 import java.awt.event.InputEvent;
 import java.awt.AWTException;
-float camX = 0, camY = -100, camZ = 0;
+float camX = 0, camY = -50, camZ = 0;
 float camSpeed = 10;
 float camYaw = 0, camPitch = 0;
 float mouseSensitivity = 0.01f;
@@ -8,6 +8,6 @@ Robot robot = null;
 float grav = 1;
 ArrayList<gameObject> objList = new ArrayList<gameObject>();
 ArrayList<int[]> tmp = new ArrayList<int[]>();
-boolean grounded;
+boolean grounded = true;
 double t = 0;
 double t1 = 0;
