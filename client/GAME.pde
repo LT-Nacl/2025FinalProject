@@ -1,6 +1,6 @@
 class Game {
-  int blockSize;
-  Game(int blockSize) {
+  float blockSize;
+  Game(float blockSize) {
     this.blockSize = blockSize;
   }
 
@@ -10,12 +10,12 @@ class Game {
       for (int y = 0; y < map[0].length; y++) {
         for (int z = 0; z < map[0][0].length; z++) {
           if (map[x][y][z] != ' ') {
-            int[] pos = {
-              x * blockSize,
-              y * blockSize,
-              z * blockSize
-            };
-            objList.add(new gameObject(pos));
+            PVector pos = new PVector(
+             (float) x * blockSize,
+             (float) y * blockSize,
+             (float) z * blockSize
+            );
+            objList.add(new gameObject("GROUND", pos, new PVector(blockSize,blockSize,blockSize)));
           }
         }
       }

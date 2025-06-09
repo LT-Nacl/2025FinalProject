@@ -38,6 +38,7 @@ game.loadMap(simpleMap);
   }
 float aG = 0;
 void draw(){  
+  background(0);
   updateCamera();
   camera(camX, camY, camZ, 
          camX + cos(camYaw) * cos(camPitch), 
@@ -46,10 +47,10 @@ void draw(){
          0, 1, 0);
       
 for(gameObject g : objList){
-  g.update();
+    render(g);
   
-    int[] pos = {(int)camX,(int)camY,(int)camZ};
-    if(camY <= 0 || (g.getType()=="G"&&g.collide(pos))){
+    PVector pos = new PVector(camX, camY, camZ);
+    if(camY <= 0 || (g.getType().contains("GROUND")&&g.collide(pos))){
       grounded = true;
     }else{
       grounded = false;
