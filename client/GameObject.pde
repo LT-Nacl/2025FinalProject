@@ -7,7 +7,7 @@ class gameObject{
    TYPE = T;
    
    
-   //type can have unordered number of tags, tags are checked for presence.
+   //type can have unordered number of tags, tags are checked for presence
    m = new Mesh(S,P);
    c = new Collider(m);
  }
@@ -17,7 +17,7 @@ class gameObject{
  }
  
  Mesh getCollider(){
-   return c; // returns as a mesh -- this is only for visualization purposes
+   return c; 
  }
  
  boolean collide(PVector p){

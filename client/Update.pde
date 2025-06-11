@@ -21,13 +21,14 @@ void updateCamera() {
       vCamZ += sin(camYaw + PI / 2);
     }
     if (key == 'e'){
-      camY+=camSpeed;
+      camY-=camSpeed;
     }
-    if (key == ' ' && grounded){
-      aG-=20;
-      camY-=.04f;
-      grounded = false;
-    }
+    if (key == ' ' & (grounded||camY>=0)) {
+    aG = -5;
+    camY -= 1;
+    grounded = false;
+   // System.out.println("gump!");
+   }
 
   }else{
     //slow down naturally.
@@ -37,20 +38,28 @@ void updateCamera() {
     if(vCamZ!=0){
     vCamZ += -.5 * vCamZ/abs(vCamZ);
     }
+    
+    if(mag(vCamZ, vCamX) < .5){
+      vCamZ = 0;
+      vCamX = 0;
+    }
   }
       vCamX=constrain(vCamX,-1f*camSpeed,camSpeed);
       vCamZ=constrain(vCamZ,-1f*camSpeed,camSpeed);
       camX+=vCamX;
       camZ+=vCamZ;
+      
+      if(!grounded){
       aG += grav;
       camY+=aG;
+      }
     
-   if(camY>=0||grounded){
+   if(camY>0){
     aG = 0;
     camY=0;
-    grounded = true;
-   System.out.println("grounded");
 }
+
+  
 
   
 
