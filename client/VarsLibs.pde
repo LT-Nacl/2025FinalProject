@@ -15,6 +15,7 @@ final int STATE_MENU = 0;
 final int STATE_PLAYING = 1;
 final int STATE_GAMEOVER = 2;
 final int STATE_WIN = 3;
+int fadeTextCount = 0;
 int currentLevel = 0;
 String[] levelList;
 boolean showGameOver = false;

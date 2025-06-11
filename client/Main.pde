@@ -1,4 +1,5 @@
 void setup(){
+  fadeTextCount = 360;
   fullScreen(P3D);
   frameRate(60); //save your machine
   noCursor();  
@@ -83,7 +84,8 @@ void draw() {
   //ALL EYES HERE \/
   for (gameObject obj : objList) {
     if (obj.getType().contains("GOAL") && obj.collide(playerPos)) {
-    
+      nextLevel();
+    popMatrix();
     return;
   }
     if (obj.getType().contains("DEATH")) {
@@ -119,5 +121,14 @@ void draw() {
     // System.out.println(curGround.getType());
    }
   drawCameraInfo();
+    if(fadeTextCount>0){
+  textAlign(CENTER, CENTER);
+  textSize(40);
+  fill(255);
+  hint(DISABLE_DEPTH_TEST);
+  text("Level: " + currentLevel, width/2, height/2 - 60);
+  fadeTextCount--;
+  hint(ENABLE_DEPTH_TEST);
+  }
   popMatrix();
 }

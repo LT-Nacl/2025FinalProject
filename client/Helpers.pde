@@ -51,7 +51,7 @@ void nextLevel() {
     currentLevel = 0;
   }
 
-  
+  fadeTextCount = 360;
   grounded = false;
 
   camX = 0;
