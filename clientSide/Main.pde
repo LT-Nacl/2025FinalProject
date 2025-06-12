@@ -3,7 +3,7 @@ void setup() {
   fullScreen(P3D);
   frameRate(60); //save your machine
   noCursor();
-  client = new Client(this, "192.168.86.34", 12345);
+  client = new Client(this, "169.254.131.45", 12345);
   logic = new gameLogic();
   levelList = new String[] {
     // Level 0: Basic platform
@@ -83,6 +83,7 @@ void draw() {
   //ALL EYES HERE \/
   for (float[] other : positions) {
     objList.add(new gameObject("PLAYERGROUND", new PVector(100, 100, 100), new PVector(other[0], other[1], other[2])));
+    System.out.println("PLAYER RENDERED");
   }
   for (gameObject obj : objList) {
     if (obj.getType().contains("GOAL") && obj.collide(playerPos)) {
@@ -113,9 +114,10 @@ void draw() {
     }
     render(obj);
   }
-  for (int i = 0; i < positions.length && !objList.isEmpty(); i++) {
+/*  for (int i = 0; i < positions.length && !objList.isEmpty(); i++) {
     objList.remove(objList.size() - 1); //remove players
   }
+  */
   //BIG LOAD LOOP
   //ALL EYES HERE /\
   updateCamera();

@@ -42,6 +42,7 @@ void receivePlayersData() {
       JSONArray data = parseJSONArray(line);
       if (data != null) {
         playersData = data;
+        
       }
     } catch (Exception e) {
       println("Invalid JSON from server: {" + e.getMessage() + "}");
