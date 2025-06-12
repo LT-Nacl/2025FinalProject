@@ -1,9 +1,9 @@
-class gameObject{
+class GameObject{
  private Mesh m;
  private Mesh c;
  private String TYPE;
  
- public gameObject(String T, PVector S, PVector P){
+ public GameObject(String T, PVector S, PVector P){
    TYPE = T;
    
    

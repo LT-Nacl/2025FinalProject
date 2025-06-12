@@ -1,5 +1,18 @@
 import processing.net.*;
 import java.util.HashMap;
+import java.net.InetAddress; //thx to https://forum.processing.org/two/discussion/25681/showing-ip-address-of-my-device-in-the-network.html
+
+String LOCAL_IP = findLanIp();
+
+ String findLanIp() {
+  try {
+    return InetAddress.getLocalHost().getHostAddress();
+  }
+  catch (Exception e) {
+    System.err.println("fail!");
+    return "";
+  }
+}
 
 Server server;
 HashMap<Client, String> buffers = new HashMap<Client, String>();
@@ -13,6 +26,7 @@ void setup() {
 }
 
 void draw() {
+  println("SERVER IP: " + LOCAL_IP);
   Client thisClient = server.available();
   if (thisClient != null) {
     if (!buffers.containsKey(thisClient)) {
@@ -34,9 +48,8 @@ void draw() {
             pos.setFloat("x", data.getFloat("x"));
             pos.setFloat("y", data.getFloat("y"));
             pos.setFloat("z", data.getFloat("z"));
-            pos.setInt("level", data.getInt("level")); // added the level field
+            pos.setInt("level", data.getInt("level")); 
             players.setJSONObject(pid, pos);
-            println("Updated: " + pid + " → " + pos);
           }
           buffers.put(thisClient, "");
         } catch (Exception e) {
@@ -58,7 +71,7 @@ void draw() {
     withID.setFloat("x", player.getFloat("x"));
     withID.setFloat("y", player.getFloat("y"));
     withID.setFloat("z", player.getFloat("z"));
-    withID.setInt("level", player.getInt("level")); // Include level
+    withID.setInt("level", player.getInt("level")); 
     allPlayers.append(withID);
   }
 

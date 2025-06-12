@@ -19,4 +19,5 @@ public boolean collide(PVector p) {
   );
 }
 
+//homegrown pseudo-AABB method -- all coliders are treated like axis-aligned bounding boxes, and you just have to consider if the points being checked is within each projection of the box
 }

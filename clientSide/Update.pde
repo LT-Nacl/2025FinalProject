@@ -1,5 +1,4 @@
-float vCamX=0;
-float vCamZ=0;
+
 void updateCamera() {
   t = millis();
   

@@ -3,7 +3,7 @@ void drawMenu() {
   textAlign(CENTER, CENTER);
   textSize(40);
   fill(255);
-  text("PARKOUR GAME", width/2, height/2 - 60);
+  text("THE BEST GAME", width/2, height/2 - 60);
   textSize(20);
   text("Press ENTER to Start", width/2, height/2 + 10);
 }
@@ -48,7 +48,7 @@ void nextLevel() {
   currentLevel++;
   
 
-  if (currentLevel >= levelList.length) {
+  if (currentLevel > levelList.length) {
     gameState = STATE_WIN;
     currentLevel = levelList.length - 1;
     println("Game completed! All levels finished!");
@@ -59,8 +59,6 @@ void nextLevel() {
   if (logic != null && levelList != null) {
     logic.generateLevelFromString(levelList[currentLevel]);
     objList = logic.getPlatforms();
-    
-   
     camX = 0; 
     camY = -50;
     camZ = 0;
@@ -70,8 +68,5 @@ void nextLevel() {
     
     println("Advanced to level: " + currentLevel);
     println("Level has " + objList.size() + " objects");
-  } else {
-    println("Error: logic or levelList is null");
-    gameState = STATE_MENU;
-  }
+  } 
 }
