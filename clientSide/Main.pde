@@ -82,8 +82,12 @@ void draw() {
   //BIG LOAD LOOP
   //ALL EYES HERE \/
   for (float[] other : positions) {
-    objList.add(new gameObject("PLAYERGROUND", new PVector(100, 100, 100), new PVector(other[0], other[1], other[2])));
-    System.out.println("PLAYER RENDERED");
+    pushMatrix();
+    translate(other[0], other[1], other[2]);
+    fill(255, 0, 0); // rendering bypass -- the transformations turn clients 2+ into a remote control for 1 -- freaky stuff
+    box(50); 
+    popMatrix();
+    println("Rendering other player at: x=" + other[0] + ", y=" + other[1] + ", z=" + other[2]);
   }
   for (gameObject obj : objList) {
     if (obj.getType().contains("GOAL") && obj.collide(playerPos)) {
@@ -114,10 +118,6 @@ void draw() {
     }
     render(obj);
   }
-/*  for (int i = 0; i < positions.length && !objList.isEmpty(); i++) {
-    objList.remove(objList.size() - 1); //remove players
-  }
-  */
   //BIG LOAD LOOP
   //ALL EYES HERE /\
   updateCamera();
