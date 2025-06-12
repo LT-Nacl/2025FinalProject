@@ -46,22 +46,32 @@ void resetLevel() {
 
 void nextLevel() {
   currentLevel++;
+  
+
   if (currentLevel >= levelList.length) {
     gameState = STATE_WIN;
-    currentLevel = 0;
+    currentLevel = levelList.length - 1;
+    println("Game completed! All levels finished!");
+    return;
   }
-
-  fadeTextCount = 360;
-  grounded = false;
-
-  camX = 0;
-  camY = -50;
-  camZ = 0;
-  aG = 0;
-
   
-  objList.clear();     
-  logic.generateLevelFromString(levelList[currentLevel]);
-  objList = logic.getPlatforms();  // <- reload new objects
-  println("Loaded level " + currentLevel + ": " + objList.size() + " objects");
+
+  if (logic != null && levelList != null) {
+    logic.generateLevelFromString(levelList[currentLevel]);
+    objList = logic.getPlatforms();
+    
+   
+    camX = 0; 
+    camY = -50;
+    camZ = 0;
+    aG = 0; 
+    grounded = false; 
+    fadeTextCount = 360;
+    
+    println("Advanced to level: " + currentLevel);
+    println("Level has " + objList.size() + " objects");
+  } else {
+    println("Error: logic or levelList is null");
+    gameState = STATE_MENU;
+  }
 }

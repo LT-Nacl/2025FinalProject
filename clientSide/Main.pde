@@ -3,20 +3,24 @@ void setup() {
   fullScreen(P3D);
   frameRate(60); //save your machine
   noCursor();
-  client = new Client(this, "192.168.86.36", 12345);
+ 
+levelList = new String[] {
+
+  "GROUND:0,0,0;200,10,200|" +
+  "GROUND:300,0,0;150,10,150|" +
+  "GOAL:300,-15,0;30,10,30|",
+  
+  "GROUND:0,0,0;500,60,500|" +
+  "GROUND:800,-150,0;250,40,250|" +
+  "GROUND:400,-300,800;200,40,200|" +
+  "GROUND:1200,-450,400;180,40,180|" +
+  "GROUND:600,-600,1200;160,40,160|" +
+  "GOAL:600,-650,1200;60,20,60|" +
+  "DEATH:0,400,0;2000,100,2000"
+};
+
+ client = new Client(this, "192.168.86.36", 12345);
   logic = new gameLogic();
-  levelList = new String[] {
-    // Level 0: Basic platform
-    "GROUND:0,0,0;100,10,100|GOAL:0,-20,150;30,10,30|DEATH:0,200,0;500,10,500",
-
-    // Level 1: Simple stairs
-    "GROUND:0,0,0;100,10,100|GROUND:0,-10,50;100,10,100|GOAL:0,-20,100;30,10,30|DEATH:0,200,0;500,10,500",
-
-    // Level 2: Floating goal
-    "GROUND:0,0,0;100,10,100|GOAL:0,-50,200;30,10,30|DEATH:0,200,0;500,10,500"
-  };
-
-
   logic.generateLevelFromString(levelList[currentLevel]);
   objList = logic.getPlatforms();
 
@@ -33,9 +37,10 @@ void setup() {
 }
 
 void draw() {
+  tick();
   background(100);
   pushMatrix();
-  tick();
+  
   if (gameState == STATE_MENU && key == ENTER) {
     gameState = STATE_PLAYING;
     camX = 0;
@@ -88,25 +93,23 @@ void draw() {
       fill(255, 0, 0); // Red for other players
       box(5);
       popMatrix();
-      println("Rendering other player at: x=" + other[0] + ", y=" + other[1] + ", z=" + other[2] + ", level=" + other[3]);
     }
   }
   for (gameObject obj : objList) {
-    if (obj.getType().contains("GOAL") && obj.collide(playerPos)) {
+    if(obj.collide(playerPos)){
+    if (obj.getType().contains("GOAL")  ) {
       nextLevel();
       popMatrix();
-      return;
-    }
+    return;
+   }
     if (obj.getType().contains("DEATH")) {
-
-      if (obj.collide(playerPos)) {
+       
         gameState = STATE_GAMEOVER;
         popMatrix();
-        return;
-      }
-    }
+    return;
+   }
     if (obj.getType().contains("GROUND")) {
-      if (obj.collide(playerPos)) {
+      
 
         curGround = obj;
         float groundTop = obj.getMesh().getPos().y - obj.getMesh().getScale().y / 2;
@@ -116,7 +119,8 @@ void draw() {
 
         aG = 0;
         grounded = true;
-      }
+      println("GOLISION" + obj.getType());
+    }
     }
     render(obj);
   }
@@ -137,5 +141,6 @@ void draw() {
     fadeTextCount--;
     hint(ENABLE_DEPTH_TEST);
   }
+  tick();
   popMatrix();
 }

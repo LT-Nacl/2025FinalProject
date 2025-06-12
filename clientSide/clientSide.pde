@@ -37,7 +37,6 @@ void receivePlayersData() {
     String incoming = client.readString();
     if (incoming == null) continue;
     inputBuffer += incoming;
-    println("Received raw data: " + incoming);
 
     // Check if buffer contains a complete JSONArray
     inputBuffer = inputBuffer.trim();
@@ -46,11 +45,9 @@ void receivePlayersData() {
         JSONArray data = parseJSONArray(inputBuffer);
         if (data != null) {
           playersData = data;
-          println("JACKPOT: " + data.toString());
           inputBuffer = ""; // Clear buffer after successful parse
         }
       } catch (Exception e) {
-        println("JSON parse error: " + e.getMessage() + " | Buffer: " + inputBuffer);
       }
     }
   }
@@ -77,7 +74,6 @@ void tick() {
         positions[idx][1] = player.getFloat("y");
         positions[idx][2] = player.getFloat("z");
         positions[idx][3] = player.getInt("level"); // Store level
-        println("Other player " + pid + ": x=" + positions[idx][0] + ", y=" + positions[idx][1] + ", z=" + positions[idx][2] + ", level=" + positions[idx][3]);
         idx++;
       }
     }

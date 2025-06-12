@@ -13,40 +13,40 @@ void setup() {
 }
 
 void draw() {
-Client thisClient = server.available();
-if (thisClient != null) {
-  if (!buffers.containsKey(thisClient)) {
-    buffers.put(thisClient, "");
-    allClients.add(thisClient); // track the client
-  }
+  Client thisClient = server.available();
+  if (thisClient != null) {
+    if (!buffers.containsKey(thisClient)) {
+      buffers.put(thisClient, "");
+      allClients.add(thisClient);
+    }
 
-  String incoming = thisClient.readString();
-  if (incoming != null) {
-    incoming = incoming.trim();
-    String currentBuffer = buffers.get(thisClient) + incoming;
+    String incoming = thisClient.readString();
+    if (incoming != null) {
+      incoming = incoming.trim();
+      String currentBuffer = buffers.get(thisClient) + incoming;
 
-    if (currentBuffer.startsWith("{") && currentBuffer.endsWith("}")) {
-      try {
-        JSONObject data = parseJSONObject(currentBuffer);
-        if (data != null) {
-          String pid = data.getString("id");
-          JSONObject pos = new JSONObject();
-          pos.setFloat("x", data.getFloat("x"));
-          pos.setFloat("y", data.getFloat("y"));
-          pos.setFloat("z", data.getFloat("z"));
-          players.setJSONObject(pid, pos);
-          println("Updated: " + pid + pos);
+      if (currentBuffer.startsWith("{") && currentBuffer.endsWith("}")) {
+        try {
+          JSONObject data = parseJSONObject(currentBuffer);
+          if (data != null) {
+            String pid = data.getString("id");
+            JSONObject pos = new JSONObject();
+            pos.setFloat("x", data.getFloat("x"));
+            pos.setFloat("y", data.getFloat("y"));
+            pos.setFloat("z", data.getFloat("z"));
+            pos.setInt("level", data.getInt("level")); // added the level field
+            players.setJSONObject(pid, pos);
+            println("Updated: " + pid + " → " + pos);
+          }
+          buffers.put(thisClient, "");
+        } catch (Exception e) {
+          buffers.put(thisClient, currentBuffer);
         }
-        buffers.put(thisClient, "");
-      } catch (Exception e) {
+      } else {
         buffers.put(thisClient, currentBuffer);
       }
-    } else {
-      buffers.put(thisClient, currentBuffer);
     }
   }
-}
-
 
   // Create player list
   JSONArray allPlayers = new JSONArray();
@@ -58,17 +58,18 @@ if (thisClient != null) {
     withID.setFloat("x", player.getFloat("x"));
     withID.setFloat("y", player.getFloat("y"));
     withID.setFloat("z", player.getFloat("z"));
+    withID.setInt("level", player.getInt("level")); // Include level
     allPlayers.append(withID);
   }
 
   for (int i = allClients.size() - 1; i >= 0; i--) {
-  Client c = allClients.get(i);
-  if (c.active()) {
-    c.write(allPlayers.toString() + "\n");
-  } else {
-    allClients.remove(i); // ✅ remove disconnected clients
+    Client c = allClients.get(i);
+    if (c.active()) {
+      c.write(allPlayers.toString() + "\n");
+    } else {
+      allClients.remove(i);
+    }
   }
-}
 
   background(0);
   fill(255);
