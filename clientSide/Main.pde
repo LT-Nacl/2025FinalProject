@@ -3,7 +3,7 @@ void setup() {
   fullScreen(P3D);
   frameRate(60); //save your machine
   noCursor();
-  client = new Client(this, "169.254.131.45", 12345);
+  client = new Client(this, "192.168.86.36", 12345);
   logic = new gameLogic();
   levelList = new String[] {
     // Level 0: Basic platform
@@ -82,12 +82,14 @@ void draw() {
   //BIG LOAD LOOP
   //ALL EYES HERE \/
   for (float[] other : positions) {
-    pushMatrix();
-    translate(other[0], other[1], other[2]);
-    fill(255, 0, 0); // rendering bypass -- the transformations turn clients 2+ into a remote control for 1 -- freaky stuff
-    box(50); 
-    popMatrix();
-    println("Rendering other player at: x=" + other[0] + ", y=" + other[1] + ", z=" + other[2]);
+    if ((int)other[3] == currentLevel) { // Check level
+      pushMatrix();
+      translate(other[0], other[1], other[2]);
+      fill(255, 0, 0); // Red for other players
+      box(5);
+      popMatrix();
+      println("Rendering other player at: x=" + other[0] + ", y=" + other[1] + ", z=" + other[2] + ", level=" + other[3]);
+    }
   }
   for (gameObject obj : objList) {
     if (obj.getType().contains("GOAL") && obj.collide(playerPos)) {

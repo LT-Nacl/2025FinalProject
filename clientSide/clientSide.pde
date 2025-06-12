@@ -26,11 +26,10 @@ void sendPlayerPosition() {
   playerData.setFloat("x", camX);
   playerData.setFloat("y", camY);
   playerData.setFloat("z", camZ);
+  playerData.setInt("level", currentLevel); // Send current level
 
-  // Send as single line with newline at the end
   client.write(playerData.toString() + "\n");
 }
-
 String inputBuffer = "";
 
 void receivePlayersData() {
@@ -62,14 +61,13 @@ void tick() {
     sendPlayerPosition();
     receivePlayersData();
     
-    // Count other players 
     int count = 0;
     for (int i = 0; i < playersData.size(); i++) {
       JSONObject player = playersData.getJSONObject(i);
       if (!player.getString("id").equals(myID)) count++;
     }
 
-    positions = new float[count][3];
+    positions = new float[count][4]; // [x, y, z, level]
     int idx = 0;
     for (int i = 0; i < playersData.size(); i++) {
       JSONObject player = playersData.getJSONObject(i);
@@ -78,15 +76,11 @@ void tick() {
         positions[idx][0] = player.getFloat("x");
         positions[idx][1] = player.getFloat("y");
         positions[idx][2] = player.getFloat("z");
-       // println("Other player " + pid + ": x=" + positions[idx][0] + ", y=" + positions[idx][1] + ", z=" + positions[idx][2]);
+        positions[idx][3] = player.getInt("level"); // Store level
+        println("Other player " + pid + ": x=" + positions[idx][0] + ", y=" + positions[idx][1] + ", z=" + positions[idx][2] + ", level=" + positions[idx][3]);
         idx++;
-      } else {
-      //  println("Own player " + myID + ": x=" + camX + ", y=" + camY + ", z=" + camZ);
       }
     }
-
-    
-    
   } else {
     text("Disconnected from server.", 10, 20);
   }
